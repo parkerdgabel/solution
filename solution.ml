@@ -29,14 +29,23 @@ let findi_opt p xs =
   | Some x -> Some x
   | None -> None
 
-let minus_one_or_zero = function
+let pred_or_zero = function
 | k when k <= 0 -> 0
 | j -> Int.pred j
 
+let findi elem l =
+  let rec findi' elem i = function
+  | [] -> failwith "findi"
+  | x::xs -> if x = elem then i else findi' elem (i + 1) xs
+  in
+  findi' elem 0 l
+
+let append_if_not_mem elem l = if List.mem elem l then l else l @ [elem]
+ 
 let f accum top = 
-  match List.find_opt (fun y -> compare_after_whitespace top y = -1) with
-  | Some x -> []
-  | None -> []
+  match List.find_opt (fun y -> compare_after_whitespace top y = -1) accum with
+  | Some x -> let i = findi x accum in insert (pred_or_zero i) accum top
+  | None -> append_if_not_mem top accum
 
 let the_stuff_to_do x = 
   let stack = Stack.of_seq @@ List.to_seq x in
