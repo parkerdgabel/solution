@@ -45,6 +45,7 @@ end
 
 module Int = struct
   include Int
+  
   let pred_or_zero = function
     | k when k <= 0 -> 0
     | j -> Int.pred j
