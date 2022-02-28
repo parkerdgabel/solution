@@ -13,7 +13,7 @@ let rec drop k xs = match k with
 let insert i xs elem = (take i xs) @ [elem] @ (drop i xs)
 
 let rest_after_whitspace s = 
-  let start = String.index s ' ' |> Int.succ in
+  let start = Int.succ @@ String.index s ' ' in
   String.sub s start (String.length s - start)
 
 let compare_after_whitespace x y = 
@@ -47,6 +47,13 @@ let contains_whitespace = function
   | "" -> false
   | s -> String.contains s ' '
 
+  (* Note that the original function mutated an array in place 
+    This function does as well *)
 let do_things_and_stuff (x : string array) =
-  let res = x |> Array.to_list |> List.filter contains_whitespace |> the_stuff_to_do in
-  ()
+  let res = x 
+          |> Array.to_list 
+          |> List.filter contains_whitespace 
+          |> the_stuff_to_do 
+          |> List.rev 
+          |> Array.of_list in
+  Array.iter print_endline res
