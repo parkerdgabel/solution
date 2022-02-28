@@ -40,12 +40,16 @@ module List = struct
 
   let insert i xs elem = (take i xs) @ [elem] @ (drop i xs)
 
+  let insert_before elem x l = 
+    let i = findi x l in 
+    insert i l elem
+  
   let append_if_not_mem elem l = if List.mem elem l then l else l @ [elem]
 end
 
 module Int = struct
   include Int
-  
+
   let pred_or_zero = function
     | k when k <= 0 -> 0
     | j -> Int.pred j
@@ -53,7 +57,7 @@ end
  
 let f accum top = 
   match List.find_opt (fun y -> String.ltaw top y) accum with
-  | Some x -> let i = List.findi x accum in List.insert (Int.pred_or_zero i) accum top
+  | Some x -> List.insert_before top x accum
   | None -> List.append_if_not_mem top accum
 
 let the_stuff_to_do x = 
