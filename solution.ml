@@ -9,9 +9,7 @@ module String = struct
     and y_after_whitepace = rest_after_whitspace y in
     compare x_after_whitepace y_after_whitepace
 
-  let contains_whitespace = function
-    | "" -> false
-    | s -> String.contains s ' '
+  let contains_whitespace = (Fun.flip String.contains) ' '
 
   let ltaw x y = (compare_after_whitespace x y) = -1
 end
