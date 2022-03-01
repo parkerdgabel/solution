@@ -2,7 +2,8 @@ module String = struct
   include String
   let rest_after_whitspace s = 
     let start = Int.succ @@ String.index s ' ' in
-    String.sub s start (String.length s - start)
+    let diff = String.length s - start in
+    String.sub s start diff
   
   let compare_after_whitespace x y = 
     let x_after_whitepace = rest_after_whitspace x
