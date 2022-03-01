@@ -54,7 +54,8 @@ module List = struct
 end
  
 let f accum top = 
-  match List.find_opt (fun y -> String.ltaw top y) accum with
+  let find_first_ltaw_opt = List.find_opt (fun y -> String.ltaw top y) accum in
+  match find_first_ltaw_opt with
   | Some x -> List.insert_before top x accum
   | None -> List.append_if_not_mem top accum
 
