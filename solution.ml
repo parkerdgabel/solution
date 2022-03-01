@@ -50,7 +50,10 @@ module List = struct
     let i = findi x l in 
     insert (Int.pred_or_zero i) l elem
   
-  let append_if_not_mem elem l = if List.mem elem l then l else l @ [elem]
+  let append_if_not_mem elem l =
+    match List.mem elem l with
+    | true -> l
+    | false -> l @ [elem]
 end
  
 let f accum top = 
@@ -63,13 +66,15 @@ let the_stuff_to_do x =
   let stack = Stack.of_seq @@ List.to_seq x in
   Stack.fold f [] stack
 
-  (* Note that the original function mutated an array in place 
-    This function does as well *)
-let do_things_and_stuff (x : string array) =
-  let res = x 
+  (* Note that the original function mutated a Javascript array by reference
+    Javascript arrays are mutable and resizable
+    Ocaml arrays are mutable but fixed length
+    We must use a ref to get the same effect. *)
+let do_things_and_stuff (x : string array ref) =
+  let res = !x 
           |> Array.to_list 
           |> List.filter String.contains_whitespace 
           |> the_stuff_to_do 
           |> List.rev 
           |> Array.of_list in
-  Array.iter print_endline res
+  x := res
