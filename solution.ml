@@ -16,6 +16,14 @@ module String = struct
   let ltaw x y = (compare_after_whitespace x y) = -1
 end
 
+module Int = struct
+  include Int
+
+  let pred_or_zero = function
+    | k when k <= 0 -> 0
+    | j -> Int.pred j
+end
+
 module List = struct
   include List
 
@@ -42,17 +50,9 @@ module List = struct
 
   let insert_before elem x l = 
     let i = findi x l in 
-    insert i l elem
+    insert (Int.pred_or_zero i) l elem
   
   let append_if_not_mem elem l = if List.mem elem l then l else l @ [elem]
-end
-
-module Int = struct
-  include Int
-
-  let pred_or_zero = function
-    | k when k <= 0 -> 0
-    | j -> Int.pred j
 end
  
 let f accum top = 
